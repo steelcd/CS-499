@@ -3,6 +3,7 @@ layout: default
 title: Software Design and Engineering
 permalink: /softwaredesign/
 ---
+{% include nav.html %}
 
 ## Software Design and Engineering
 [Github Project Link]("https://github.com/steelcd/CS-499/tree/module3-software-engineering")

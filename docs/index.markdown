@@ -4,6 +4,7 @@
 
 layout: default
 ---
+{% include nav.html %}
 
 ## About This Portfolio
 

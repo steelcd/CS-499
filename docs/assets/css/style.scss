@@ -6,3 +6,18 @@
 #project_title {
   font-size: 36px;
 }
+
+.site-nav {
+  margin-top: 18px;
+}
+
+.site-nav a {
+  display: inline-block;
+  margin-right: 16px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.site-nav a:hover {
+  color: #ffcc00;
+}
