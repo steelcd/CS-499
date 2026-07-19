@@ -15,3 +15,21 @@ The biggest change was adding an Express.js application layer. Express now acts 
 I also added a Vue.js admin interface for managing animal records. This gives the project a dedicated area for CRUD operations instead of only viewing records through the dashboard. The admin view can display animal data from the API and includes create, update, and delete workflows. I created a reusable animal form component so the create and update pages can share the same fields and input structure instead of duplicating the form code.
 
 Security and deployment were also part of this enhancement. I added a basic authentication structure using Express sessions, with middleware to protect routes that should only be available after login. The current login uses a stubbed user for now, but the code is organized so it can later be replaced with database-backed users and hashed passwords. I also added NGINX as a reverse proxy with HTTPS using a local self-signed certificate, which lets the project demonstrate encrypted communication in the Docker environment. Overall, this enhancement makes the app easier to maintain, easier to expand, and closer to the structure of a real full-stack application.
+
+## Screenshots
+
+### Docker Containers
+
+![Docker desktop showing services launched from docker compose]({{ "/assets/images/docker-containers.png" | relative_url }})
+
+### Login Page
+
+![Login page showing AAC Rescue authentication form]({{ "/assets/images/login-page.png" | relative_url }})
+
+### Admin App
+
+![Admin data table showing animal records]({{ "/assets/images/admin-app.png" | relative_url }})
+
+### Animal Form
+
+![Create animal form in the Vue admin interface]({{ "/assets/images/animal-form.png" | relative_url }})
