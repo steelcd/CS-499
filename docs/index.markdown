@@ -11,7 +11,7 @@ This portfolio highlights my growth throughout the Computer Science program.
 
 ## Featured Work
 
-- Software Design and Engineering
+- [Software Design and Engineering]({% /softwaredesign/ %})
 - Algorithms and Data Structures
 - Databases
 
