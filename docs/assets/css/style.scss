@@ -7,17 +7,23 @@
   font-size: 36px;
 }
 
+.inner {
+  max-width: 960px;
+}
+
 .site-nav {
-  margin-top: 18px;
+  margin: 0 0 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #d8d8d8;
 }
 
 .site-nav a {
   display: inline-block;
-  margin-right: 16px;
-  color: #fff;
+  margin: 0 18px 8px 0;
+  color: #2879a8;
   font-weight: 700;
 }
 
 .site-nav a:hover {
-  color: #ffcc00;
+  color: #1f5f83;
 }
