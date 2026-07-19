@@ -6,7 +6,7 @@ permalink: /softwaredesign/
 {% include nav.html %}
 
 ## Software Design and Engineering
-[Github Project Link]("https://github.com/steelcd/CS-499/tree/module3-software-engineering")
+[Github Project Link](https://github.com/steelcd/CS-499/tree/module3-software-engineering){:target="_blank"}
 
 For this enhancement, I focused on turning the original AAC Rescue dashboard into a more complete full-stack application. The original project worked as a Python Dash dashboard connected to MongoDB, but it was mainly focused on displaying and filtering shelter data. For the capstone, I wanted to keep that original dashboard intact while building a stronger application structure around it.
 

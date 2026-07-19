@@ -16,13 +16,7 @@ The main artifact in this portfolio is the AAC Rescue application. The original 
 
 The purpose of the portfolio is not just to show finished code. It is also meant to show my process: identifying limitations in the original artifact, planning improvements, making technical decisions, and explaining how those decisions connect to computer science concepts. Each enhancement includes both the updated work and a reflection on what changed, why it changed, and what I learned from the process.
 
-[Original Project]("https://github.com/steelcd/CS340")
-
-## Featured Work
-
-- [Software Design and Engineering]({{ "/softwaredesign/" | relative_url }})
-- Algorithms and Data Structures
-- Databases
+[Original Project](https://github.com/steelcd/CS340){:target="_blank"}
 
 ## Contact
 
