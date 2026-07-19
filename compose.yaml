@@ -1,0 +1,54 @@
+services:
+  mongo:
+    build:
+      context: ./mongo
+    container_name: mongo
+    ports:
+      - "${MONGO_PORT}:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+
+  nodejs:
+    build:
+      context: ./nodejs
+    container_name: nodejs
+    environment:
+      - MONGO_ROOT_USER=${MONGO_ROOT_USER}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_DB=aac
+    depends_on:
+      - mongo
+      - dash
+    
+  dash:
+    build:
+      context: ./dash
+    container_name: dash
+    depends_on:
+      - mongo
+  
+  nginx:
+    image: nginx:1.30.4-trixie
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+    - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - nodejs
+      - mongo
+      - dash
+
+volumes:
+  mongo_data:
+    driver: local
+  mongo_config:
+    driver: local

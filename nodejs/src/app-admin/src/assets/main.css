@@ -1,0 +1,52 @@
+@import './base.css';
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+#app {
+  width: 100%;
+  min-height: 100vh;
+  font-weight: normal;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  #app {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .admin-sidebar {
+    min-height: 100vh;
+    padding: 20px 14px;
+    border-right: 1px solid #d9e2ec;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  nav a {
+    padding: 8px 10px;
+  }
+
+}
