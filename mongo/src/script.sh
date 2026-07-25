@@ -1,12 +1,17 @@
 #!/bin/bash
 
 DB_NAME="aac"
-COLL_NAME="animals"
+
 mongoimport --db $DB_NAME \
-            --collection $COLL_NAME \
+            --collection animals \
             --mode upsert\
             --type csv \
             --headerline \
             --file /tmp/data.csv
+
+mongoimport --db $DB_NAME \
+            --collection rescue_profiles \
+            --file /tmp/rescue_profiles.json \
+            --jsonArray
 
 echo "=== Import complete ==="

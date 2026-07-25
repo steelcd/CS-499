@@ -153,6 +153,18 @@ button:hover,
   color: #e4e1bd;
 }
 
+.nav-logout a {
+  padding: 0 14px;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+}
+
+.nav-logout a:hover {
+  color: #2f4f4f;
+  background: #e4e1bd;
+  border-color: #e4e1bd;
+}
+
 @media (max-width: 700px) {
   .header-brand {
     min-height: 112px;

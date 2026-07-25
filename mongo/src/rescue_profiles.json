@@ -1,0 +1,122 @@
+[
+  {
+    "profile_key": "water",
+    "profile_name": "Water",
+    "active": true,
+    "display_order": 1,
+    "description": "Candidate profile for water rescue dogs.",
+    "required": {
+      "animal_type": "Dog"
+    },
+    "rules": [
+      {
+        "field": "breed",
+        "type": "in",
+        "values": [
+          "Labrador Retriever Mix",
+          "Chesapeake Bay Retriever",
+          "Chesa Bay Retr",
+          "Newfoundland"
+        ],
+        "weight": 45
+      },
+      {
+        "field": "age_upon_outcome_in_weeks",
+        "type": "range",
+        "min": 26,
+        "max": 156,
+        "weight": 30
+      },
+      {
+        "field": "sex_upon_outcome",
+        "type": "equals",
+        "value": "Intact Female",
+        "weight": 25
+      }
+    ],
+    "score": {
+      "recommendation_threshold": 70
+    }
+  },
+  {
+    "profile_key": "mountain_wilderness",
+    "profile_name": "Mountain or Wilderness",
+    "active": true,
+    "display_order": 2,
+    "description": "Candidate profile for mountain or wilderness rescue dogs.",
+    "required": {
+      "animal_type": "Dog"
+    },
+    "rules": [
+      {
+        "field": "breed",
+        "type": "in",
+        "values": [
+          "German Shepherd",
+          "Alaskan Malamute",
+          "Old English Sheepdog",
+          "Siberian Husky",
+          "Rottweiler"
+        ],
+        "weight": 45
+      },
+      {
+        "field": "age_upon_outcome_in_weeks",
+        "type": "range",
+        "min": 26,
+        "max": 156,
+        "weight": 30
+      },
+      {
+        "field": "sex_upon_outcome",
+        "type": "equals",
+        "value": "Intact Male",
+        "weight": 25
+      }
+    ],
+    "score": {
+      "recommendation_threshold": 70
+    }
+  },
+  {
+    "profile_key": "disaster_tracking",
+    "profile_name": "Disaster or Individual Tracking",
+    "active": true,
+    "display_order": 3,
+    "description": "Candidate profile for disaster response or individual tracking dogs.",
+    "required": {
+      "animal_type": "Dog"
+    },
+    "rules": [
+      {
+        "field": "breed",
+        "type": "in",
+        "values": [
+          "Doberman Pinscher",
+          "Doberman Pinsch",
+          "German Shepherd",
+          "Golden Retriever",
+          "Bloodhound",
+          "Rottweiler"
+        ],
+        "weight": 45
+      },
+      {
+        "field": "age_upon_outcome_in_weeks",
+        "type": "range",
+        "min": 20,
+        "max": 300,
+        "weight": 30
+      },
+      {
+        "field": "sex_upon_outcome",
+        "type": "equals",
+        "value": "Intact Male",
+        "weight": 25
+      }
+    ],
+    "score": {
+      "recommendation_threshold": 70
+    }
+  }
+]

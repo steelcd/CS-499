@@ -7,6 +7,7 @@ const port = 3000
 const dashboardRoute = require('./app_server/routes/dashboard');
 const { requireLogin, requireAdmin } = require('./app_server/middleware/authMiddleware');
 const authController = require('./app_server/controllers/authController');
+const rescueCandidatesRouter = require('./app_api/routes/rescueCandidates');
 
 // Define routers
 var apiRouter = require('./app_api/routes/index');
@@ -35,6 +36,7 @@ app.set('trust proxy', 1);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', express.json({ limit: '1mb' }), apiRouter);
+app.use('/api/rescue-candidates', rescueCandidatesRouter);
 
 // Server vue.js app
 app.use('/admin', requireLogin, express.static(path.join(__dirname, 'app-admin/dist')));

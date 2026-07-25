@@ -8,6 +8,7 @@ from dash import dash_table
 from dash import no_update
 from dash.dependencies import Input, Output, State
 import base64
+import requests
 
 # Configure OS routines
 import os
@@ -17,43 +18,29 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from animalshelter import AnimalShelter
+table_columns = [
+            {'name': 'Shelter', 'id': 'shelter'},
+            {'name': 'Animal ID', 'id': 'animal_id'},
+            {'name': 'Name', 'id': 'name'},
+            {'name': 'Type', 'id': 'animal_type'},
+            {'name': 'Breed', 'id': 'breed'},
+            {'name': 'date_of_birth', 'id': 'DOB'},
+            {'name': 'Outcome', 'id': 'outcome_type'},
+            {'name': 'Sex', 'id': 'sex_upon_outcome'}
+            ]
 
-#FIXME Data is loaded at app start, page will never get new data how that it's being hosted
-# as a continuing service
+score_column = {'name': 'Score', 'id': 'score'}
 
-###########################
-# Data Manipulation / Model
-###########################
-
-
-# Update with your credentials
-username = "mongo_user"
-password = "mongo_password"
-
-# Connect to database via CRUD Module
-host = 'mongo'
-port = 27017
-db = 'aac'
-collection = 'animals'
-db = AnimalShelter(
-    username,
-    password,
-    host,
-    port,
-    db,
-    collection
-)
 
 # class read method must support return of list object and accept projection json input
 # sending the read method an empty document requests all documents be returned
-df = pd.DataFrame.from_records(db.read({}))
+#df = pd.DataFrame.from_records(db.read({}))
 
 # MongoDB v5+ is going to return the '_id' column and that is going to have an 
 # invlaid object type of 'ObjectID' - which will cause the data_table to crash - so we remove
 # it in the dataframe here. The df.drop command allows us to drop the column. If we do not set
 # inplace=True - it will reeturn a new dataframe that does not contain the dropped column(s)
-df.drop(columns=['_id'],inplace=True)
+#df.drop(columns=['_id'],inplace=True)
 
 ## Debug
 # print(len(df.to_dict(orient='records')))
@@ -72,7 +59,16 @@ app = Dash(
 image_filename = 'grazioso_salvare_logo.png'
 encoded_image = base64.b64encode(open(image_filename, 'rb').read())
 
-app.layout = html.Div([
+# Create function to refresh data and then return layout
+def serve_layout():
+
+    # Fetch data
+    response = requests.get("http://nodejs:3000/api/animals")
+    json_data = response.json()
+    df = pd.DataFrame(json_data)
+    df.drop(columns=['_id'], inplace=True, errors='ignore')
+
+    return html.Div([
     html.Div(id='hidden-div', style={'display':'none'}),
     html.Center(html.B(html.H1('CS-340 Dashboard', style={'marginTop': '10px'}))),
     html.Div(className='row',
@@ -90,19 +86,32 @@ app.layout = html.Div([
         html.Div([
             dcc.Dropdown(
                 id='filter-type',
-                options=['Water', 'Mountain or Wilderness', 'Disaster or Individual Tracking'],
-                placeholder='Select a rescue type')
+                value ='all',
+                clearable=False,
+                options=[
+                    {'label': 'All animals', 'value': 'all'},
+                    {'label': 'Water', 'value': 'water'},
+                    {'label': 'Mountain or Wilderness', 'value': 'mountain_wilderness'},
+                    {'label': 'Disaster or Individual Tracking', 'value': 'disaster_tracking'}
+
         ],
-        style={'width': '30%'}),
-        html.Div(html.Button(id='clear_filters', n_clicks=0, children='Clear filter(s)'))
-             ]
+        style={'width': '100%'}),
+        html.Div(
+            html.Button(
+                id='clear_filters',
+                n_clicks=0,
+                children='Clear filter(s)'
             ),
+            style={'marginLeft': '12px'}
+        )
+        ],
+        style={'display': 'flex', 'alignItems': 'center', 'width': '420px'}),
+             ]
+             ),
     html.Hr(),
     dash_table.DataTable(
         id='datatable-id',
-        columns=[
-            {"name": i, "id": i, "deletable": False, "selectable": True} for i in df.columns
-        ],
+        columns=table_columns,
         data=df.to_dict('records'),
         row_selectable='single',
         filter_action='native',
@@ -114,7 +123,7 @@ app.layout = html.Div([
     ),
     html.Br(),
     html.Hr(),
-#This sets up the dashboard so that your chart and your geolocation chart are side-by-side
+    #This sets up the dashboard so that your chart and your geolocation chart are side-by-side
     html.Div(className='row',
          style={'display' : 'flex'},
              children=[
@@ -130,75 +139,47 @@ app.layout = html.Div([
             style={'width': '50%', 'padding':'10px'}
             )
         ])
-])
+    ])
+
+app.layout = serve_layout
 
 #############################################
 # Interaction Between Components / Controller
 #############################################
 
+@app.callback(
+    Output('filter-type', 'value'),
+    [Input('clear_filters', 'n_clicks')],
+    prevent_initial_call=True
+)
+def clear_filters(n_clicks):
+    return 'all'
+
 @app.callback(Output('datatable-id','data'),
+              Output('datatable-id', 'columns'),
               [Input('filter-type', 'value')])
 def update_dashboard(filter_type):
     
-    print(filter_type)
-    # Filters by selection value
-    filter_dict = {
-        'Water': {'animal_type': 'Dog',
-                'breed': {'$in' :['Labrador Retriever Mix',
-                                    'Chesapeake Bay Retriever',
-                                    'Chesa Bay Retr',
-                                    'Newfoundland']
-                           },
-                 'sex_upon_outcome': 'Intact Female',
-                 'age_upon_outcome_in_weeks': {'$gte':26, '$lte':156}
-                 },
-        'Mountain or Wilderness': {'animal_type': 'Dog',
-                'breed': {'$in' :['German Shepherd',
-                                                     'Alaskan Malamute',
-                                                     'Old English Sheepdog',
-                                                    'Siberian Husky',
-                                                    'Rottweiler']},
-                 'sex_upon_outcome': 'Intact Male',
-                 'age_upon_outcome_in_weeks': {'$gte':26, '$lte':156}
-                 },
-        'Disaster or Individual Tracking': {'animal_type': 'Dog',
-                'breed': {'$in' :['Doberman Pinscher',
-                                                    'Doberman Pinsch',
-                                                     'German Shepherd',
-                                                     'Golden Retriever',
-                                                    'Bloodhound',
-                                                    'Rottweiler']},
-                 'sex_upon_outcome': 'Intact Male',
-                 'age_upon_outcome_in_weeks': {'$gte':20, '$lte':300}
-                 }
-    }
-    
-    filter = filter_dict.get(filter_type, None)
-    
-    if filter is None:
-        df = pd.DataFrame.from_records(db.read({}))
-    else:
-        df = pd.DataFrame.from_records(db.read(filter))
+    if filter_type == 'all':
+        columns = table_columns
         
-    #Clean up id field, handle no records return from filter
-    if len(df) > 0:
-        df.drop(columns=['_id'],inplace=True)
-    
-    return df.to_dict('records')    
+        # Fetch data
+        response = requests.get(f"http://nodejs:3000/api/animals")
+        json_data = response.json()
+        df = pd.DataFrame(json_data)
+        df.drop(columns=['_id'], inplace=True, errors='ignore')
 
-# Clear filters from dropdown and table
-@app.callback(
-    Output('filter-type', 'value'),
-    Output('datatable-id', 'filter_query'),
-    [Input('clear_filters', 'n_clicks')])
-def clear_filters(n_clicks):
-    if n_clicks:
-        dropdown_return = ''
-        table_return = ''
-        
-        return dropdown_return, table_return
     else:
-        return no_update, no_update
+
+        columns = [score_column] + table_columns
+
+        # Fetch data
+        response = requests.get(f"http://nodejs:3000/api/rescue-candidates/{filter_type}")
+        json_data = response.json()
+        df = pd.DataFrame(json_data)
+        df.drop(columns=['_id'], inplace=True, errors='ignore')
+
+    return df.to_dict('records'), columns
 
 # Display the breeds of animal based on quantity represented in
 # the data table
