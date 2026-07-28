@@ -18,7 +18,7 @@ async function fetchAnimal() {
     try {
         const animalId = route.params.animalId
 
-        const response = await fetch(`/api/animals/${animalId}`)
+        const response = await fetch(`/api/admin/animals/${animalId}`)
 
         if (!response.ok) {
             const result = await response.json()
@@ -41,7 +41,7 @@ async function updateAnimal(animalData) {
   error.value = null
 
   try {
-    const response = await fetch(`/api/animals/${animalData.animal_id}`, {
+    const response = await fetch(`/api/admin/animals/${animalData.animal_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -8,6 +8,7 @@ const dashboardRoute = require('./app_server/routes/dashboard');
 const { requireLogin, requireShelterAdmin } = require('./app_server/middleware/authMiddleware');
 const authController = require('./app_server/controllers/authController');
 const rescueCandidatesRouter = require('./app_api/routes/rescueCandidates');
+const animalsController = require('./app_api/controllers/animals');
 
 // Define routers
 var apiRouter = require('./app_api/routes/index');
@@ -41,11 +42,21 @@ app.use((req, res, next) => {
 app.set('trust proxy', 1);
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/api/animals', animalsController.animalsList);
 app.use('/api/rescue-candidates', rescueCandidatesRouter);
-app.use('/api', express.json({ limit: '1mb' }), requireLogin, requireShelterAdmin, apiRouter);
+app.use('/api/admin', express.json({ limit: '1mb' }), requireLogin, requireShelterAdmin, apiRouter);
 
 // Server vue.js app
+app.get(/^\/admin$/, requireLogin, requireShelterAdmin, (req, res) => {
+  res.redirect('/admin/');
+});
+app.get(/^\/admin\/$/, requireLogin, requireShelterAdmin, (req, res) => {
+  res.sendFile(path.join(__dirname, 'app-admin/dist/index.html'));
+});
 app.use('/admin', requireLogin, requireShelterAdmin, express.static(path.join(__dirname, 'app-admin/dist')));
+app.get(/^\/admin\/.*$/, requireLogin, requireShelterAdmin, (req, res) => {
+  res.sendFile(path.join(__dirname, 'app-admin/dist/index.html'));
+});
 
 app.get('/', (req, res) => {
   if (req.session.user) {

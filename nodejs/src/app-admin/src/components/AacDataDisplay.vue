@@ -86,7 +86,7 @@ const formatDate = (value) => {
 // Define the asynchronous data fetching function
 const fetchData = async () => {
   try {
-    const response = await fetch('/api/animals')
+    const response = await fetch('/api/admin/animals')
     
     // Check if the server response is successful (status 200-299)
     if (!response.ok) {
@@ -116,7 +116,7 @@ async function deleteAnimal(animalId) {
     return
   }
 
-  const response = await fetch(`/api/animals/${animalId}`, {
+  const response = await fetch(`/api/admin/animals/${animalId}`, {
     method: 'DELETE',
   })
 

@@ -13,7 +13,7 @@ async function createAnimal(animalData) {
   error.value = null
 
   try {
-    const response = await fetch('/api/animals', {
+    const response = await fetch('/api/admin/animals', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

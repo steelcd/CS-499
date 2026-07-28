@@ -5,7 +5,7 @@ function getShelterFilter(req) {
     const user = req.session.user;
     const roles = user?.roles || [];
 
-    if (roles.includes('admin')) {
+    if (!user || roles.includes('admin')) {
         return {};
     }
 
