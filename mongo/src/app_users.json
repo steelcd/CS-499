@@ -1,0 +1,23 @@
+[
+    {
+        "email":"admin@aac.com",
+        "password_hash":"$2a$12$dpPWv3yd5IwTEMT5eDlu6ekDJJtWCH.VumzgWvI4qW/uv/me2MuG.",
+        "is_active":true,
+        "roles":["admin"],
+        "shelter_claims":[]
+    },
+    {
+        "email":"shelter1@aac.com",
+        "password_hash":"$2a$12$dpPWv3yd5IwTEMT5eDlu6eqKmrbUqWuiM7MPAdFY/MFFeRy4Ne6/O",
+        "is_active":true,
+        "roles":["shelter_admin"],
+        "shelter_claims":["Shelter 1"]
+    },
+    {
+        "email":"user@aac.com",
+        "password_hash":"$2a$12$dpPWv3yd5IwTEMT5eDlu6e5F6jmbSkOcFoenWMaD8GGI/1awglLKm",
+        "is_active":true,
+        "roles":["user"],
+        "shelter_claims":[]
+    }
+]

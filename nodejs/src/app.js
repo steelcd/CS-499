@@ -5,7 +5,7 @@ const { engine } = require('express-handlebars');
 const app = express()
 const port = 3000
 const dashboardRoute = require('./app_server/routes/dashboard');
-const { requireLogin, requireAdmin } = require('./app_server/middleware/authMiddleware');
+const { requireLogin, requireShelterAdmin } = require('./app_server/middleware/authMiddleware');
 const authController = require('./app_server/controllers/authController');
 const rescueCandidatesRouter = require('./app_api/routes/rescueCandidates');
 
@@ -32,14 +32,20 @@ app.use(session({
     maxAge: 86400000
   },
 }));
+// Set local variable admin page access
+app.use((req, res, next) => {
+  const roles = req.session.user?.roles || [];
+  res.locals.canAccessAdmin = roles.includes('admin') || roles.includes('shelter_admin');
+  next();
+});
 app.set('trust proxy', 1);
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', express.json({ limit: '1mb' }), apiRouter);
 app.use('/api/rescue-candidates', rescueCandidatesRouter);
+app.use('/api', express.json({ limit: '1mb' }), requireLogin, requireShelterAdmin, apiRouter);
 
 // Server vue.js app
-app.use('/admin', requireLogin, express.static(path.join(__dirname, 'app-admin/dist')));
+app.use('/admin', requireLogin, requireShelterAdmin, express.static(path.join(__dirname, 'app-admin/dist')));
 
 app.get('/', (req, res) => {
   if (req.session.user) {

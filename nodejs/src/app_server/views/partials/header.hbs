@@ -17,9 +17,11 @@
             <li>
                 <a href="/about">About Us</a>
             </li>
+        {{#if canAccessAdmin}}
             <li>
                 <a href="/admin">Admin</a>
             </li>
+        {{/if}}
             <li class="nav-logout">
                 <a href="/logout">Logout</a>
             </li>

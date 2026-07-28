@@ -1,11 +1,33 @@
 const { default: mongoose } = require('mongoose');
 const Animal = require('../models/animal');
 
+function getShelterFilter(req) {
+    const user = req.session.user;
+    const roles = user?.roles || [];
+
+    if (roles.includes('admin')) {
+        return {};
+    }
+
+    return {
+        shelter: {
+            $in: user?.shelter_claims || []
+        }
+    };
+}
+
+function canManageShelter(req, shelter) {
+    const user = req.session.user;
+    const roles = user?.roles || [];
+
+    return roles.includes('admin') || (user?.shelter_claims || []).includes(shelter);
+}
+
 // GET: /animals - lists all animals
 const animalsList = async(req, res) => {
     try {
         const q = await Animal
-            .find({}) // No filter, return all records
+            .find(getShelterFilter(req))
             .exec();
 
         return res
@@ -26,6 +48,16 @@ const animalsList = async(req, res) => {
 // POST /animals - add a new animal
 const animalsAddAnimal = async(req, res) => {
     const now = new Date();
+
+    if (!canManageShelter(req, req.body.shelter)) {
+        return res
+            .status(403)
+            .json(
+                {
+                    message: 'Not authorized for this shelter'
+                }
+            );
+    }
 
     const newAnimal = new Animal({
         age_upon_outcome: req.body.age_upon_outcome,
@@ -76,10 +108,23 @@ const animalsAddAnimal = async(req, res) => {
 
 // PUT: /animals/:animalId - update a single animal
 const animalsUpdateAnimal = async(req, res) => {
+    if (!canManageShelter(req, req.body.shelter)) {
+        return res
+            .status(403)
+            .json(
+                {
+                    message: 'Not authorized for this shelter'
+                }
+            );
+    }
+
     try{
         const q = await Animal
             .findOneAndUpdate(
-                { 'animal_id': req.params.animalId },
+                {
+                    'animal_id': req.params.animalId,
+                    ...getShelterFilter(req)
+                },
                 {
                     age_upon_outcome: req.body.age_upon_outcome,
                     animal_type: req.body.animal_type,
@@ -128,7 +173,10 @@ const animalsUpdateAnimal = async(req, res) => {
 const animalsFindById = async(req, res) => {
     try {
         const q = await Animal
-            .findOne({'animal_id' : req.params.animalId}) // Return single record
+            .findOne({
+                'animal_id' : req.params.animalId,
+                ...getShelterFilter(req)
+            })
             .exec();
 
         if(!q)
@@ -159,7 +207,10 @@ const animalsFindById = async(req, res) => {
 const animalsDeleteById = async(req, res) => {
     try {
         const q = await Animal
-            .findOneAndDelete({ 'animal_id': req.params.animalId })
+            .findOneAndDelete({
+                'animal_id': req.params.animalId,
+                ...getShelterFilter(req)
+            })
             .exec();
 
         if(!q) {

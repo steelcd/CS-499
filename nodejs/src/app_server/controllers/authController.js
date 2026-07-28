@@ -8,10 +8,10 @@ const showLogin = (req, res) => {
     res.render('login', { title: 'AAC Rescue Login' });
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body;
 
-    const user = authService.authenticateUser(email, password);
+    const user = await authService.authenticateUser(email, password);
 
     if (!user) {
         return res.status(401).render('login', {

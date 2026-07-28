@@ -35,7 +35,7 @@ https://127.0.0.1
 The browser may warn about the local self-signed certificate. Accept the warning to continue for local testing.\
 \
 A test admin account is loaded for now:  
-Email: admin@admin.com  
+Email: admin@aac.com  
 Password: password  
 
 ## Stop
