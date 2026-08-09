@@ -1,11 +1,18 @@
-<div class="narrative-link">
+<div class="narrative-pdf">
   <details>
     <summary><strong>{{ include.title }}</strong></summary>
-    <p>{{ include.description }}</p>
+
     <p>
       <a href="{{ include.file | relative_url }}" target="_blank">
-        Open full narrative PDF
+        Open PDF in new tab
       </a>
     </p>
+
+    <iframe
+      src="{{ include.file | relative_url }}"
+      width="100%"
+      height="{{ include.height | default: '700px' }}"
+      style="border: 1px solid #ccc; border-radius: 6px;">
+    </iframe>
   </details>
 </div>

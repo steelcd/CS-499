@@ -29,3 +29,10 @@ The main data structures used in this enhancement are MongoDB documents, JavaScr
 ### Dash App Filter Result
 
 ![Dash App updated to return scoring result]({{ "/assets/images/updated_dashboard.png" | relative_url }})
+
+## Full Narrative
+
+{% include pdf_viewer.html
+  title="View Algorithms and Data Structures Narrative"
+  file="/assets/narratives/Algorithms_Data_Structures_Narrative.pdf"
+%}

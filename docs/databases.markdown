@@ -29,3 +29,10 @@ The main database structures used in this enhancement are the animal records col
 ### Scoped Shelter Admin Access
 
 ![Records filtered by shelter]({{ "/assets/images/scoped_shelter_access.png" | relative_url }})
+
+## Full Narrative
+
+{% include pdf_viewer.html
+  title="View Databases Narrative"
+  file="/assets/narratives/Databases_Narrative.pdf"
+%}
