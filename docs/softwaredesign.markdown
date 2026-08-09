@@ -33,3 +33,10 @@ Security and deployment were also part of this enhancement. I added a basic auth
 ### Animal Form
 
 ![Create animal form in the Vue admin interface]({{ "/assets/images/animal-form.png" | relative_url }})
+
+## Full Narrative
+
+{% include pdf_viewer.html
+  title="View Software Design and Engineering Narrative"
+  file="/assets/narratives/Software_Design_Narrative.pdf"
+%}
