@@ -6,7 +6,7 @@ permalink: /algorithms/
 {% include nav.html %}
 
 ## Algorithms and Data Structures
-[Github Project Link](https://github.com/steelcd/CS-499/tree/module4-algorithms){:target="_blank"}
+[Enhanced Artifact Link](https://github.com/steelcd/CS-499/tree/module4-algorithms){:target="_blank"}
 
 For this enhancement, I focused on improving how the AAC Rescue application identifies rescue animal candidates. The original dashboard used hardcoded filters for Water Rescue, Mountain or Wilderness Rescue, and Disaster or Individual Tracking. These filters worked for the original project, but they only returned exact matches. If an animal missed one requirement, it was excluded from the results, even if it matched several other useful criteria.
 

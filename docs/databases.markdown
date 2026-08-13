@@ -6,7 +6,7 @@ permalink: /databases/
 {% include nav.html %}
 
 ## Databases
-[Github Project Link](https://github.com/steelcd/CS-499/tree/module5-databases){:target="_blank"}
+[Enhanced Artifact Link](https://github.com/steelcd/CS-499/tree/module5-databases){:target="_blank"}
 
 For this enhancement, I focused on the database changes needed to support authentication, authorization, and controlled access to the AAC Rescue application. Earlier enhancements had already added several database-related improvements, including MongoDB seed data, API-based CRUD operations, and rescue profile documents used by the scoring algorithm. The database enhancement completed the remaining user access work by replacing the hardcoded login with database-backed user records.
 
